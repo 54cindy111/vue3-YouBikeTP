@@ -1,10 +1,10 @@
 <template>
   <Chart
-    v-if="allAreaData.labels"
+    v-if="chartData.type"
     class="chart"
-    :type="'pie'"
-    :labels="allAreaData.labels"
-    :datasetsData="allAreaData.datasetsData"
+    :type="chartData.type"
+    :labels="chartData.labels"
+    :datasetsData="chartData.datasetsData"
   />
   <div class="home">
     <el-select v-model="select" placeholder="Select" @change="selectArea">
@@ -38,7 +38,8 @@ export default {
     const originArea: any = ref([])
     const areaArray: any = ref([])
     const originBikeArr: any = ref([])
-    const allAreaData: any = ref({
+    const chartData: any = ref({
+      type: '',
       labels: [],
       datasetsData: []
     })
@@ -68,7 +69,8 @@ export default {
         })
         await countList.push(name.length)
       })
-      allAreaData.value = {
+      chartData.value = {
+        type: 'pie',
         datasetsData: countList,
         labels: areaArray
       }
@@ -89,11 +91,12 @@ export default {
       await store.dispatch('ubike/getBikeList')
       await getArray()
       await getArea()
+      getAllAreaData()
     })
 
     return {
       getAllAreaData,
-      allAreaData,
+      chartData,
       areaArray,
       bikeArr,
       select,
