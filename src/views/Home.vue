@@ -47,7 +47,8 @@ export default {
         return arr.indexOf(item) === index
       }
     )
-    //
+    areaArray.value.splice(0, 0, '全部')
+
     const countList: any = []
     areaArray.value.forEach((x: any) => {
       const name = originArea.value.filter((y: any) => {
@@ -55,12 +56,11 @@ export default {
       })
       countList.push(name.length)
     })
-    areaArray.value.splice(0, 0, '全部')
     allAreaData.value = {
       datasetsData: countList,
       labels: areaArray
     }
-    //
+
     const selectArea = (val: string) => {
       if (val !== '全部') {
         bikeArr.value = originBikeArr.value.filter((item: any) => {
