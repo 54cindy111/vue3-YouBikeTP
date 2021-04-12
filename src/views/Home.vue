@@ -1,11 +1,6 @@
 <template>
   <div class="home">
-    <el-select
-      clearable
-      v-model="select"
-      placeholder="Select"
-      @change="selectArea"
-    >
+    <el-select v-model="select" placeholder="Select" @change="selectArea">
       <el-option
         v-for="item in areaArray"
         :key="item"
@@ -32,7 +27,7 @@ export default {
     const originBikeArr: any = ref([])
     const bikeArr: any = ref([])
     const bikeObj: any = bike.retVal
-    const select: any = ref('')
+    const select: any = ref('全部')
 
     for (const i in bikeObj) {
       originBikeArr.value.push(bikeObj[i])
@@ -44,9 +39,10 @@ export default {
         return arr.indexOf(item) === index
       }
     )
+    areaArray.value.splice(0, 0, '全部')
 
     const selectArea = (val: string) => {
-      if (val) {
+      if (val !== '全部') {
         bikeArr.value = originBikeArr.value.filter((item: any) => {
           return item.sarea === val
         })
