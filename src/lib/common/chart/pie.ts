@@ -1,10 +1,10 @@
 const data = {
-  labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+  labels: ['pie1', 'pie2', 'pie3', 'pie4', 'pie5'],
   datasets: [
     {
       label: 'Dataset 1',
       data: [10, 14, 5, 2, 20],
-      backgroundColor: ['Red', 'Orange', 'Yellow', 'Green', 'Blue']
+      backgroundColor: ['#10555B', '#136E73', '#79BFB2', '#F9A88E', '#E9665D']
     }
   ]
 }

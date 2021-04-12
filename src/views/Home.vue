@@ -1,4 +1,10 @@
 <template>
+  <Chart
+    v-if="allAreaData.labels"
+    class="chart"
+    :labels="allAreaData.labels"
+    :datasetsData="allAreaData.datasetsData"
+  />
   <div class="home">
     <el-select v-model="select" placeholder="Select" @change="selectArea">
       <el-option
@@ -15,16 +21,18 @@
 
 <script lang="ts">
 import BikeList from '@/components/Table/bikeList.vue'
+import Chart from '@/components/Chart.vue'
 import { bike } from '@/lib/common/bike'
 import { ref } from 'vue'
 
 export default {
   name: 'Home',
-  components: { BikeList },
+  components: { BikeList, Chart },
   setup() {
     const originArea: any = ref([])
     const areaArray: any = ref([])
     const originBikeArr: any = ref([])
+    const allAreaData: any = ref()
     const bikeArr: any = ref([])
     const bikeObj: any = bike.retVal
     const select: any = ref('全部')
@@ -39,8 +47,20 @@ export default {
         return arr.indexOf(item) === index
       }
     )
+    //
+    const countList: any = []
+    areaArray.value.forEach((x: any) => {
+      const name = originArea.value.filter((y: any) => {
+        return x === y
+      })
+      countList.push(name.length)
+    })
     areaArray.value.splice(0, 0, '全部')
-
+    allAreaData.value = {
+      datasetsData: countList,
+      labels: areaArray
+    }
+    //
     const selectArea = (val: string) => {
       if (val !== '全部') {
         bikeArr.value = originBikeArr.value.filter((item: any) => {
@@ -52,6 +72,7 @@ export default {
     }
 
     return {
+      allAreaData,
       areaArray,
       bikeArr,
       select,
@@ -60,3 +81,8 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.chart {
+  width: 30%;
+}
+</style>

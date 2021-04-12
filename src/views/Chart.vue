@@ -1,28 +1,12 @@
 <template>
-  <div class="user">
-    <div>Chart</div>
-    <div>
-      <canvas ref="myChartRef"></canvas>
-    </div>
-  </div>
+  <Chart class="chart" :labels="[]" :datasetsData="[]" />
 </template>
 
 <script lang="ts">
-import Chart from 'chart.js/auto'
-import { pie } from '@/lib/common/chart'
-import { ref, onMounted } from 'vue'
+import Chart from '@/components/Chart.vue'
 
 export default {
   name: 'Chart',
-  setup() {
-    const myChartRef = ref(null)
-    const config = pie.config
-    onMounted(() => {
-      myChartRef.value = new Chart(myChartRef.value, config)
-    })
-    return {
-      myChartRef
-    }
-  }
+  components: { Chart }
 }
 </script>
