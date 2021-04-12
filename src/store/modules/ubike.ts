@@ -16,7 +16,12 @@ export default {
   actions: {
     getBikeList: async ({ commit }: any) => {
       const res: any = await $api.ubike.getBike()
-      commit('setBikeList', res.retVal)
+      const list: any = res.retVal
+      for (const item in list) {
+        list[item].tot = parseInt(list[item].tot)
+        list[item].sbi = parseInt(list[item].sbi)
+      }
+      commit('setBikeList', list)
     }
   }
 }

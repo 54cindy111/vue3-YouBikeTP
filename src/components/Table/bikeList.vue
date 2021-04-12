@@ -4,8 +4,8 @@
       <el-table-column prop="sarea" label="地區"> </el-table-column>
       <el-table-column prop="sna" label="地點"> </el-table-column>
       <el-table-column prop="ar" label="地址"> </el-table-column>
-      <el-table-column prop="sbi" label="可借車輛"> </el-table-column>
-      <el-table-column prop="tot" label="可停空位"> </el-table-column>
+      <el-table-column prop="sbi" label="可借車輛" sortable> </el-table-column>
+      <el-table-column prop="tot" label="可停空位" sortable> </el-table-column>
     </el-table>
   </div>
 </template>

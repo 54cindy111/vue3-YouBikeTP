@@ -7,6 +7,8 @@
     :datasetsData="chartData.datasetsData"
   />
   <div class="home">
+    <i class="el-icon-search"></i>
+    <span class="text">篩選地區</span>
     <el-select v-model="select" placeholder="Select" @change="selectArea">
       <el-option
         v-for="item in areaArray"
@@ -108,5 +110,21 @@ export default {
 <style scoped lang="scss">
 .chart {
   width: 30%;
+  margin: 0 auto 20px;
+}
+.el-icon-search,
+.text {
+  margin-right: 4px;
+  font-size: 15px;
+  color: #606266;
+}
+.el-select-dropdown__item.selected {
+  color: #f3780b;
+}
+::v-deep {
+  .el-select .el-input__inner:focus,
+  .el-select .el-input.is-focus .el-input__inner {
+    border-color: #eb9549;
+  }
 }
 </style>
