@@ -2,6 +2,7 @@
 import MainLayout from '@/Layout/Main.vue'
 //Pages
 import Home from '@/views/Home.vue'
+import Chart from '@/views/Chart.vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
@@ -15,6 +16,12 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Home',
         meta: { title: 'Home' },
         component: Home
+      },
+      {
+        path: '/Chart',
+        name: 'Chart',
+        meta: { title: 'Chart' },
+        component: Chart
       }
     ]
   },
