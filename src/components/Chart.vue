@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="chart">
     <div>Chart</div>
     <div>
       <canvas ref="myChartRef"></canvas>
@@ -9,12 +9,16 @@
 
 <script lang="ts">
 import Chart from 'chart.js/auto'
-import { pie } from '@/lib/common/chart'
-import { ref, onMounted, toRefs } from 'vue'
+import * as _chartType from '@/lib/common/chart'
+import { ref, onMounted, toRefs, watch } from 'vue'
 
 export default {
   name: 'Chart',
   props: {
+    type: {
+      type: String,
+      default: ''
+    },
     labels: {
       type: Array,
       default: () => []
@@ -26,13 +30,31 @@ export default {
   },
   setup(props: any) {
     const myChartRef = ref(null)
-    const { labels, datasetsData } = toRefs(props)
+    const { labels, datasetsData, type } = toRefs(props)
 
-    pie.data.labels = labels.value
-    pie.data.datasets[0].data = datasetsData.value
-    const config = pie.config
+    const getConfig = () => {
+      const chartType: any = Object.assign({}, _chartType)
+      chartType[type.value].data.labels = labels.value
+      chartType[type.value].data.datasets[0].data = datasetsData.value
+      const config = chartType[type.value].config
+      return config
+    }
+    const newChart = async () => {
+      myChartRef.value = await new Chart(myChartRef.value, getConfig())
+    }
+    const destroyChart = async () => {
+      const vv: any = myChartRef.value
+      await vv.destroy()
+    }
+    const changeChart = async () => {
+      await destroyChart()
+      await newChart()
+    }
+
+    watch(labels, changeChart, { deep: true })
+
     onMounted(() => {
-      myChartRef.value = new Chart(myChartRef.value, config)
+      newChart()
     })
     return {
       myChartRef

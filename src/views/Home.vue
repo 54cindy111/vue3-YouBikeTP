@@ -2,6 +2,7 @@
   <Chart
     v-if="allAreaData.labels"
     class="chart"
+    :type="'pie'"
     :labels="allAreaData.labels"
     :datasetsData="allAreaData.datasetsData"
   />
@@ -37,7 +38,10 @@ export default {
     const originArea: any = ref([])
     const areaArray: any = ref([])
     const originBikeArr: any = ref([])
-    const allAreaData: any = ref()
+    const allAreaData: any = ref({
+      labels: [],
+      datasetsData: []
+    })
     const bikeArr: any = ref([])
     const bikeObj: any = bike.retVal
     const select: any = ref('')
@@ -53,19 +57,23 @@ export default {
       }
     )
     //
-    const countList: any = []
-    areaArray.value.forEach((x: any) => {
-      const name = originArea.value.filter((y: any) => {
-        return x === y
+    const getAllAreaData = () => {
+      const countList: any = []
+      areaArray.value.forEach(async (x: any) => {
+        const name = originArea.value.filter((y: any) => {
+          return x === y
+        })
+        await countList.push(name.length)
       })
-      countList.push(name.length)
-    })
-    allAreaData.value = {
-      datasetsData: countList,
-      labels: areaArray
+      allAreaData.value = {
+        datasetsData: countList,
+        labels: areaArray
+      }
     }
+    // getAllAreaData()
     //
     const selectArea = (val: string) => {
+      getAllAreaData()
       if (val) {
         bikeArr.value = originBikeArr.value.filter((item: any) => {
           return item.sarea === val
@@ -76,6 +84,7 @@ export default {
     }
 
     return {
+      getAllAreaData,
       allAreaData,
       areaArray,
       bikeArr,
