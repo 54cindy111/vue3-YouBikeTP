@@ -70,7 +70,7 @@ export default {
         await countList.push(name.length)
       })
       chartData.value = {
-        type: 'pie',
+        type: 'bar',
         datasetsData: countList,
         labels: areaArray
       }
