@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <el-table :data="arr" style="width: 100%">
+    <el-table :data="arr" style="width: 100%" @row-click="handdleRow">
       <el-table-column prop="sarea" label="地區"> </el-table-column>
       <el-table-column prop="sna" label="地點"> </el-table-column>
       <el-table-column prop="ar" label="地址"> </el-table-column>
@@ -13,7 +13,15 @@
 <script lang="ts">
 export default {
   name: 'Bike List',
-  props: ['arr']
+  props: ['arr'],
+  setup(props: any, { emit }: any) {
+    const handdleRow = (row: any) => {
+      emit('getSnoChart', { sbi: Number(row.sbi), tot: Number(row.tot) })
+    }
+    return {
+      handdleRow
+    }
+  }
 }
 </script>
 

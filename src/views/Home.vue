@@ -16,7 +16,7 @@
       >
       </el-option>
     </el-select>
-    <BikeList :arr="bikeArr" />
+    <BikeList :arr="bikeArr" @getSnoChart="getSnoData" />
   </div>
 </template>
 
@@ -75,15 +75,37 @@ export default {
         labels: areaArray
       }
     }
+    const getAreaData = () => {
+      let sbi = 0
+      let tot = 0
+      bikeArr.value.forEach(async (x: any) => {
+        sbi = sbi + Number(x.sbi)
+        tot = tot + Number(x.tot)
+      })
+      chartData.value = {
+        type: 'pie',
+        labels: ['可借車輛', '可停空位'],
+        datasetsData: [sbi, tot]
+      }
+    }
+    const getSnoData = (d: any) => {
+      console.log([d.sbi, d.tot])
+      chartData.value = {
+        type: 'pie',
+        labels: ['可借車輛', '可停空位'],
+        datasetsData: [d.sbi, d.tot]
+      }
+    }
 
     const selectArea = (val: string) => {
       if (val !== '全部') {
         bikeArr.value = originBikeArr.value.filter((item: any) => {
           return item.sarea === val
         })
-        getAllAreaData()
+        getAreaData()
       } else {
         bikeArr.value = originBikeArr.value
+        getAllAreaData()
       }
     }
 
@@ -100,7 +122,8 @@ export default {
       areaArray,
       bikeArr,
       select,
-      selectArea
+      selectArea,
+      getSnoData
     }
   }
 }
