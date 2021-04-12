@@ -7,12 +7,7 @@
     :datasetsData="allAreaData.datasetsData"
   />
   <div class="home">
-    <el-select
-      clearable
-      v-model="select"
-      placeholder="Select"
-      @change="selectArea"
-    >
+    <el-select v-model="select" placeholder="Select" @change="selectArea">
       <el-option
         v-for="item in areaArray"
         :key="item"
@@ -28,13 +23,18 @@
 <script lang="ts">
 import BikeList from '@/components/Table/bikeList.vue'
 import Chart from '@/components/Chart.vue'
-import { bike } from '@/lib/common/bike'
-import { ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   name: 'Home',
   components: { BikeList, Chart },
   setup() {
+    //init
+    const store = useStore()
+    const bikeObj: any = computed(() => store.state.ubike.bikeList)
+
+    //ref
     const originArea: any = ref([])
     const areaArray: any = ref([])
     const originBikeArr: any = ref([])
@@ -43,20 +43,23 @@ export default {
       datasetsData: []
     })
     const bikeArr: any = ref([])
-    const bikeObj: any = bike.retVal
-    const select: any = ref('')
+    const select: any = ref('全部')
 
-    for (const i in bikeObj) {
-      originBikeArr.value.push(bikeObj[i])
-      bikeArr.value = originBikeArr.value
-      originArea.value.push(bikeObj[i].sarea)
-    }
-    areaArray.value = originArea.value.filter(
-      (item: any, index: any, arr: any) => {
-        return arr.indexOf(item) === index
+    const getArray = () => {
+      for (const i in bikeObj.value) {
+        originBikeArr.value.push(bikeObj.value[i])
+        originArea.value.push(bikeObj.value[i].sarea)
       }
-    )
-    //
+      bikeArr.value = originBikeArr.value
+    }
+    const getArea = async () => {
+      areaArray.value = await originArea.value.filter(
+        (item: any, index: any, arr: any) => {
+          return arr.indexOf(item) === index
+        }
+      )
+      areaArray.value.splice(0, 0, '全部')
+    }
     const getAllAreaData = () => {
       const countList: any = []
       areaArray.value.forEach(async (x: any) => {
@@ -70,18 +73,23 @@ export default {
         labels: areaArray
       }
     }
-    // getAllAreaData()
-    //
+
     const selectArea = (val: string) => {
-      getAllAreaData()
-      if (val) {
+      if (val !== '全部') {
         bikeArr.value = originBikeArr.value.filter((item: any) => {
           return item.sarea === val
         })
+        getAllAreaData()
       } else {
         bikeArr.value = originBikeArr.value
       }
     }
+
+    onMounted(async () => {
+      await store.dispatch('ubike/getBikeList')
+      await getArray()
+      await getArea()
+    })
 
     return {
       getAllAreaData,
