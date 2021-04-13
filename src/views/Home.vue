@@ -9,17 +9,32 @@
     @hideChange="hideChange"
   />
   <div class="home">
-    <i class="el-icon-search"></i>
-    <span class="text">篩選地區</span>
-    <el-select v-model="select" placeholder="Select" @change="selectArea">
-      <el-option
-        v-for="item in areaArr"
-        :key="item"
-        :label="item"
-        :value="item"
-      >
-      </el-option>
-    </el-select>
+    <div class="search">
+      <i class="el-icon-search"></i>
+      <span>篩選</span>
+    </div>
+    <el-row type="flex" align="middle" style="margin-bottom: 10px;">
+      <el-col class="text" :span="2">地區</el-col>
+      <el-select v-model="select" placeholder="請選擇" @change="search">
+        <el-option
+          v-for="item in areaArr"
+          :key="item"
+          :label="item"
+          :value="item"
+        >
+        </el-option>
+      </el-select>
+    </el-row>
+    <el-row type="flex" align="middle">
+      <el-col class="text" :span="2">關鍵字</el-col>
+      <el-col :span="22">
+        <el-input
+          v-model="input"
+          placeholder="請輸入關鍵字"
+          @change="search"
+        ></el-input>
+      </el-col>
+    </el-row>
     <BikeList v-if="!loading" :arr="bikeArr" @getSnoChart="getSnoData" />
   </div>
 </template>
@@ -49,6 +64,7 @@ export default {
     let getListID: any = 0
     const bikeArr: any = ref(Object.assign([], originBikeArr.value))
     const areaArr: any = ref([])
+    const input: any = ref('')
     const select: any = ref('全部')
     const loading = ref(false)
 
@@ -108,10 +124,22 @@ export default {
       }
     }
 
-    const selectArea = (val: string) => {
-      if (val !== '全部') {
+    const search = () => {
+      if (select.value !== '全部') {
         bikeArr.value = originBikeArr.value.filter((item: any) => {
-          return item.sarea === val
+          return (
+            (item.sna.search(input.value) !== -1 ||
+              item.ar.search(input.value) !== -1) &&
+            item.sarea === select.value
+          )
+        })
+        getAreaData()
+      } else if (input.value) {
+        bikeArr.value = originBikeArr.value.filter((item: any) => {
+          return (
+            item.sna.search(input.value) !== -1 ||
+            item.ar.search(input.value) !== -1
+          )
         })
         getAreaData()
       } else {
@@ -132,7 +160,7 @@ export default {
       originBikeArr,
       async () => {
         await getArea()
-        selectArea(select.value)
+        search()
       },
       { deep: true }
     )
@@ -149,7 +177,8 @@ export default {
       areaArr,
       bikeArr,
       select,
-      selectArea,
+      input,
+      search,
       getSnoData
     }
   }
@@ -160,10 +189,19 @@ export default {
   width: 30%;
   margin: 0 auto 20px;
 }
-.el-icon-search,
-.text {
+.home {
+  text-align: left;
+}
+.el-icon-search {
   margin-right: 4px;
-  font-size: 15px;
+}
+.search {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #606266;
+}
+.text {
+  font-size: 14px;
   color: #606266;
 }
 .el-select-dropdown__item.selected {
