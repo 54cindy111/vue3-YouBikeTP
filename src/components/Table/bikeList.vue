@@ -16,7 +16,11 @@ export default {
   props: ['arr'],
   setup(props: any, { emit }: any) {
     const handdleRow = (row: any) => {
-      emit('getSnoChart', { sbi: Number(row.sbi), tot: Number(row.tot) })
+      emit('getSnoChart', {
+        sbi: Number(row.sbi),
+        tot: Number(row.tot),
+        sna: row.sna
+      })
     }
     return {
       handdleRow
