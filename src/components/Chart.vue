@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <div>Chart</div>
+    <div>{{ title }}圖表</div>
     <div>
       <canvas ref="myChartRef"></canvas>
     </div>
@@ -15,6 +15,10 @@ import { ref, onMounted, toRefs, watch } from 'vue'
 export default {
   name: 'Chart',
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
     type: {
       type: String,
       default: ''

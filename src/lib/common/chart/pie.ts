@@ -4,7 +4,7 @@ const data = {
     {
       label: 'Dataset 1',
       data: [10, 14, 5, 2, 20],
-      backgroundColor: ['#10555B', '#136E73', '#79BFB2', '#F9A88E', '#E9665D']
+      backgroundColor: ['#eb9549', '#f6da77', '#79BFB2', '#F9A88E', '#E9665D']
     }
   ]
 }

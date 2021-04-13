@@ -2,6 +2,7 @@
   <Chart
     v-if="chartData.type"
     class="chart"
+    :title="chartTitle"
     :type="chartData.type"
     :labels="chartData.labels"
     :datasetsData="chartData.datasetsData"
@@ -38,6 +39,7 @@ export default {
     const originArea: any = computed(() => store.state.ubike.areaList)
 
     //ref
+    const chartTitle: any = ref('')
     const chartData: any = ref({
       type: '',
       labels: [],
@@ -71,6 +73,7 @@ export default {
         })
         await countList.push(name.length)
       })
+      chartTitle.value = ''
       chartData.value = {
         type: 'bar',
         datasetsData: countList,
@@ -84,6 +87,7 @@ export default {
         sbi = sbi + Number(x.sbi)
         tot = tot + Number(x.tot)
       })
+      chartTitle.value = select.value
       chartData.value = {
         type: 'pie',
         labels: ['可借車輛', '可停空位'],
@@ -91,7 +95,7 @@ export default {
       }
     }
     const getSnoData = (d: any) => {
-      console.log([d.sbi, d.tot])
+      chartTitle.value = d.sna
       chartData.value = {
         type: 'pie',
         labels: ['可借車輛', '可停空位'],
@@ -128,6 +132,7 @@ export default {
 
     return {
       getAllAreaData,
+      chartTitle,
       chartData,
       areaArr,
       bikeArr,
@@ -150,12 +155,12 @@ export default {
   color: #606266;
 }
 .el-select-dropdown__item.selected {
-  color: #f3780b;
+  color: $primary;
 }
 ::v-deep {
   .el-select .el-input__inner:focus,
   .el-select .el-input.is-focus .el-input__inner {
-    border-color: #eb9549;
+    border-color: $primary;
   }
 }
 </style>
