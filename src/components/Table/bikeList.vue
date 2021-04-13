@@ -19,6 +19,8 @@ export default {
       emit('getSnoChart', {
         sbi: Number(row.sbi),
         tot: Number(row.tot),
+        lat: Number(row.lat),
+        lng: Number(row.lng),
         sna: row.sna
       })
     }

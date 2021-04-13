@@ -20,6 +20,7 @@
       >
       </el-option>
     </el-select>
+    <Map class="map" :mapData="mapData" />
     <BikeList v-if="!loading" :arr="bikeArr" @getSnoChart="getSnoData" />
   </div>
 </template>
@@ -27,12 +28,13 @@
 <script lang="ts">
 import BikeList from '@/components/Table/bikeList.vue'
 import Chart from '@/components/Chart.vue'
+import Map from '@/components/Map.vue'
 import { onMounted, ref, computed, onUnmounted, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   name: 'Home',
-  components: { BikeList, Chart },
+  components: { BikeList, Chart, Map },
   setup() {
     //init
     const store = useStore()
@@ -51,6 +53,7 @@ export default {
     const areaArr: any = ref([])
     const select: any = ref('全部')
     const loading = ref(false)
+    const mapData: any = ref([])
 
     const getBikeList = async () => {
       await store.dispatch('ubike/getBikeList')
@@ -106,6 +109,7 @@ export default {
         labels: ['可借車輛', '可停空位'],
         datasetsData: [d.sbi, d.tot]
       }
+      mapData.value = [d]
     }
 
     const selectArea = (val: string) => {
@@ -122,7 +126,6 @@ export default {
 
     const hideChange = (val: any) => {
       loading.value = val
-      console.log(loading)
     }
 
     onMounted(async () => {
@@ -150,7 +153,8 @@ export default {
       bikeArr,
       select,
       selectArea,
-      getSnoData
+      getSnoData,
+      mapData
     }
   }
 }
@@ -159,6 +163,10 @@ export default {
 .chart {
   width: 30%;
   margin: 0 auto 20px;
+}
+.map {
+  position: relative;
+  height: 30vh;
 }
 .el-icon-search,
 .text {
