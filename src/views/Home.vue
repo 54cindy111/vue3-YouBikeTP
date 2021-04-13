@@ -11,7 +11,7 @@
     <span class="text">篩選地區</span>
     <el-select v-model="select" placeholder="Select" @change="selectArea">
       <el-option
-        v-for="item in areaArray"
+        v-for="item in areaArr"
         :key="item"
         :label="item"
         :value="item"
@@ -25,7 +25,7 @@
 <script lang="ts">
 import BikeList from '@/components/Table/bikeList.vue'
 import Chart from '@/components/Chart.vue'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, onUnmounted, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -34,38 +34,38 @@ export default {
   setup() {
     //init
     const store = useStore()
-    const bikeObj: any = computed(() => store.state.ubike.bikeList)
+    const originBikeArr: any = computed(() => store.state.ubike.bikeList)
+    const originArea: any = computed(() => store.state.ubike.areaList)
 
     //ref
-    const originArea: any = ref([])
-    const areaArray: any = ref([])
-    const originBikeArr: any = ref([])
     const chartData: any = ref({
       type: '',
       labels: [],
       datasetsData: []
     })
-    const bikeArr: any = ref([])
+    let getListID: any = 0
+    const bikeArr: any = ref(Object.assign([], originBikeArr.value))
+    const areaArr: any = ref([])
     const select: any = ref('全部')
 
-    const getArray = () => {
-      for (const i in bikeObj.value) {
-        originBikeArr.value.push(bikeObj.value[i])
-        originArea.value.push(bikeObj.value[i].sarea)
-      }
-      bikeArr.value = originBikeArr.value
+    const getBikeList = async () => {
+      await store.dispatch('ubike/getBikeList')
+      getListID = setInterval(async () => {
+        await store.dispatch('ubike/getBikeList')
+      }, 60000)
     }
+
     const getArea = async () => {
-      areaArray.value = await originArea.value.filter(
+      areaArr.value = await originArea.value.filter(
         (item: any, index: any, arr: any) => {
           return arr.indexOf(item) === index
         }
       )
-      areaArray.value.splice(0, 0, '全部')
+      areaArr.value.splice(0, 0, '全部')
     }
     const getAllAreaData = () => {
       const countList: any = []
-      areaArray.value.forEach(async (x: any) => {
+      areaArr.value.forEach(async (x: any) => {
         const name = originArea.value.filter((y: any) => {
           return x === y
         })
@@ -74,7 +74,7 @@ export default {
       chartData.value = {
         type: 'bar',
         datasetsData: countList,
-        labels: areaArray
+        labels: areaArr
       }
     }
     const getAreaData = () => {
@@ -112,16 +112,24 @@ export default {
     }
 
     onMounted(async () => {
-      await store.dispatch('ubike/getBikeList')
-      await getArray()
-      await getArea()
-      getAllAreaData()
+      await getBikeList()
+    })
+    watch(
+      originBikeArr,
+      async () => {
+        await getArea()
+        selectArea(select.value)
+      },
+      { deep: true }
+    )
+    onUnmounted(() => {
+      clearInterval(getListID)
     })
 
     return {
       getAllAreaData,
       chartData,
-      areaArray,
+      areaArr,
       bikeArr,
       select,
       selectArea,
