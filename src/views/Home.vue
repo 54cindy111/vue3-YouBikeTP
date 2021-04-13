@@ -5,6 +5,7 @@
     :type="chartData.type"
     :labels="chartData.labels"
     :datasetsData="chartData.datasetsData"
+    @hideChange="hideChange"
   />
   <div class="home">
     <i class="el-icon-search"></i>
@@ -18,7 +19,7 @@
       >
       </el-option>
     </el-select>
-    <BikeList :arr="bikeArr" @getSnoChart="getSnoData" />
+    <BikeList v-if="!loading" :arr="bikeArr" @getSnoChart="getSnoData" />
   </div>
 </template>
 
@@ -47,6 +48,7 @@ export default {
     const bikeArr: any = ref(Object.assign([], originBikeArr.value))
     const areaArr: any = ref([])
     const select: any = ref('全部')
+    const loading = ref(false)
 
     const getBikeList = async () => {
       await store.dispatch('ubike/getBikeList')
@@ -63,6 +65,9 @@ export default {
       )
       areaArr.value.splice(0, 0, '全部')
     }
+    const changeChartData = (data: any) => {
+      chartData.value = data
+    }
     const getAllAreaData = () => {
       const countList: any = []
       areaArr.value.forEach(async (x: any) => {
@@ -71,11 +76,11 @@ export default {
         })
         await countList.push(name.length)
       })
-      chartData.value = {
+      changeChartData({
         type: 'bar',
         datasetsData: countList,
         labels: areaArr
-      }
+      })
     }
     const getAreaData = () => {
       let sbi = 0
@@ -84,19 +89,18 @@ export default {
         sbi = sbi + Number(x.sbi)
         tot = tot + Number(x.tot)
       })
-      chartData.value = {
+      changeChartData({
         type: 'pie',
         labels: ['可借車輛', '可停空位'],
         datasetsData: [sbi, tot]
-      }
+      })
     }
     const getSnoData = (d: any) => {
-      console.log([d.sbi, d.tot])
-      chartData.value = {
+      changeChartData({
         type: 'pie',
         labels: ['可借車輛', '可停空位'],
         datasetsData: [d.sbi, d.tot]
-      }
+      })
     }
 
     const selectArea = (val: string) => {
@@ -109,6 +113,11 @@ export default {
         bikeArr.value = originBikeArr.value
         getAllAreaData()
       }
+    }
+
+    const hideChange = (val: any) => {
+      loading.value = val
+      console.log(loading)
     }
 
     onMounted(async () => {
@@ -127,6 +136,8 @@ export default {
     })
 
     return {
+      loading,
+      hideChange,
       getAllAreaData,
       chartData,
       areaArr,

@@ -28,9 +28,15 @@ export default {
       default: () => []
     }
   },
-  setup(props: any) {
+  setup(props: any, { emit }: any) {
+    let _rChart = false
     const myChartRef = ref(null)
     const { labels, datasetsData, type } = toRefs(props)
+
+    const hideChange = (val: any) => {
+      _rChart = val
+      emit('hideChange', _rChart)
+    }
 
     const getConfig = () => {
       const chartType: any = Object.assign({}, _chartType)
@@ -40,7 +46,10 @@ export default {
       return config
     }
     const newChart = async () => {
-      myChartRef.value = await new Chart(myChartRef.value, getConfig())
+      hideChange(true)
+      window.setTimeout(() => hideChange(false), 1000)
+      const vv: any = myChartRef.value
+      myChartRef.value = await new Chart(vv, getConfig())
     }
     const destroyChart = async () => {
       const vv: any = myChartRef.value
