@@ -25,7 +25,7 @@
         </el-option>
       </el-select>
     </el-row>
-    <el-row type="flex" align="middle">
+    <el-row type="flex" align="middle" style="margin-bottom: 10px;">
       <el-col class="text" :span="2">關鍵字</el-col>
       <el-col :span="22">
         <el-input
