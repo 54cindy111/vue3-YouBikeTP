@@ -252,13 +252,4 @@ export default {
   font-size: 14px;
   color: #606266;
 }
-.el-select-dropdown__item.selected {
-  color: $primary;
-}
-::v-deep {
-  .el-select .el-input__inner:focus,
-  .el-select .el-input.is-focus .el-input__inner {
-    border-color: $primary;
-  }
-}
 </style>

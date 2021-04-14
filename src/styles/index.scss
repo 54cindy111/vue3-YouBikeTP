@@ -18,3 +18,12 @@
     }
   }
 }
+
+// Select
+.el-select-dropdown__item.selected {
+  color: $primary;
+}
+.el-select .el-input__inner:focus,
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: $primary;
+}
