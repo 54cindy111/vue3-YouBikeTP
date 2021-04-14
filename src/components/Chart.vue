@@ -1,6 +1,8 @@
 <template>
   <div class="chart">
-    <div>{{ lang === 'ch' ? title.ch : title.en }} {{ $t('chart') }}</div>
+    <div class="title">
+      {{ lang === 'ch' ? title.ch : title.en }} {{ $t('chart') }}
+    </div>
     <div>
       <canvas ref="myChartRef"></canvas>
     </div>
@@ -84,3 +86,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.title {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+</style>

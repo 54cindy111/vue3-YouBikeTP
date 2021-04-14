@@ -1,6 +1,6 @@
 <template>
   <Chart
-    v-if="chartData.type"
+    v-if="chartData.type && bikeArr.length"
     class="chart"
     :title="chartTitle"
     :type="chartData.type"
@@ -35,7 +35,7 @@
       <el-col :span="22">
         <el-input
           v-model="input"
-          :placeholder="`${$t('input')} ${$t('keyword')}`"
+          :placeholder="$t('input')"
           @change="search"
         ></el-input>
       </el-col>
