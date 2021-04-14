@@ -82,6 +82,7 @@ export default {
   bottom: 20px;
   border-radius: 50%;
   background-color: $primary;
+  cursor: pointer;
 }
 .el-icon-arrow-up {
   padding: 14px;
