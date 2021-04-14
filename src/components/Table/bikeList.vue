@@ -59,5 +59,9 @@ export default {
   .el-table th {
     text-align: center;
   }
+  .el-table .cell {
+    word-wrap: break-word;
+    word-break: normal;
+  }
 }
 </style>

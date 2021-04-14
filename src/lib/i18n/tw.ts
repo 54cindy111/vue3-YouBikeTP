@@ -23,7 +23,7 @@ export const tw = {
   keyword: '關鍵字',
 
   select: '請選擇',
-  input: '請輸入',
+  input: '請輸入關鍵字',
 
   /*validate*/
   validate_required: '{msg}必填',

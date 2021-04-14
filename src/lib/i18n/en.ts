@@ -13,7 +13,7 @@ export const en = {
   Home: 'Home',
 
   chart: 'Chart',
-  site: 'Site',
+  site: 'Rental site',
   area: 'Area',
   addr: 'Address',
   sbi: 'Can be by vehicle',
@@ -22,8 +22,8 @@ export const en = {
   search: 'Search',
   keyword: 'Keyword',
 
-  select: 'Please Select',
-  input: 'Please Input',
+  select: 'Please select',
+  input: 'Please input keyword',
 
   /*validate*/
   validate_required: '{msg} is required',

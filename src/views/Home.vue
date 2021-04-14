@@ -1,6 +1,6 @@
 <template>
   <Chart
-    v-if="chartData.type"
+    v-if="chartData.type && bikeArr.length"
     class="chart"
     :title="chartTitle"
     :type="chartData.type"
@@ -14,7 +14,7 @@
       <span>{{ $t('search') }}</span>
     </div>
     <el-row type="flex" align="middle" style="margin-bottom: 10px;">
-      <el-col class="text" :span="2">{{ $t('area') }}</el-col>
+      <el-col class="text" :xs="5" :sm="2">{{ $t('area') }}</el-col>
       <el-select
         value-key="ch"
         v-model="select"
@@ -31,11 +31,11 @@
       </el-select>
     </el-row>
     <el-row type="flex" align="middle" style="margin-bottom: 10px;">
-      <el-col class="text" :span="2">{{ $t('keyword') }}</el-col>
-      <el-col :span="22">
+      <el-col class="text" :xs="5" :sm="2">{{ $t('keyword') }}</el-col>
+      <el-col :xs="19" :sm="22">
         <el-input
           v-model="input"
-          :placeholder="`${$t('input')} ${$t('keyword')}`"
+          :placeholder="$t('input')"
           @change="search"
         ></el-input>
       </el-col>
@@ -43,18 +43,20 @@
     <Map class="map" :mapData="mapData" />
     <BikeList v-if="!loading" :arr="bikeArr" @getSnoChart="getSnoData" />
   </div>
+  <ScrollTo />
 </template>
 
 <script lang="ts">
 import BikeList from '@/components/Table/bikeList.vue'
 import Chart from '@/components/Chart.vue'
 import Map from '@/components/Map.vue'
+import ScrollTo from '@/components/ScrollTo.vue'
 import { onMounted, ref, computed, onUnmounted, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   name: 'Home',
-  components: { BikeList, Chart, Map },
+  components: { BikeList, Chart, Map, ScrollTo },
   setup() {
     //init
     const store = useStore()
@@ -230,8 +232,17 @@ export default {
 </script>
 <style scoped lang="scss">
 .chart {
-  width: 30%;
   margin: 0 auto 20px;
+}
+@media screen and (min-width: 768px) {
+  .chart {
+    width: 30%;
+  }
+}
+@media only screen and (min-width: 0px) and (max-width: 767px) {
+  .chart {
+    width: 90%;
+  }
 }
 .map {
   position: relative;
