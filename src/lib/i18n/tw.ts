@@ -11,35 +11,8 @@ export const tw = {
 
   menu: '選單',
   Home: '首頁',
-  User: '使用者列表',
-  'Login History': '登入日誌',
 
-  setting: '設定',
-  'change password': '更改密碼',
-  'sign out': '登出',
-
-  account: '帳號',
-  password: '密碼',
-  password_c: '確認密碼',
-  name: '姓名',
-  email: '信箱',
-  phone: '電話',
-  address: '地址',
-  status: '狀態',
-  ip: 'IP',
-  active: '啟用',
-  block: '停用',
-  'logined date': '登入時間',
-  'created time': '建立時間',
-  'updated time': '更新時間',
-
-  addUser: '新增使用者',
-  editStatus: '編輯狀態',
-  deleteUser: '刪除使用者',
-
-  'login form': '登入',
-  'register form': '註冊',
-  'create account text': '建立帳號',
+  chart: '圖表',
 
   /*validate*/
   validate_required: '{msg}必填',

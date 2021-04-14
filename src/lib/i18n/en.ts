@@ -11,35 +11,8 @@ export const en = {
 
   menu: 'Menu',
   Home: 'Home',
-  User: 'User',
-  'Login History': 'Login History',
 
-  setting: 'Setting',
-  'change password': 'Change Password',
-  'sign out': 'Sign Out',
-
-  account: 'Account',
-  password: 'Password',
-  password_c: 'Password Confirmation',
-  name: 'Name',
-  email: 'Email',
-  phone: 'Phone',
-  address: 'Address',
-  status: 'Active',
-  ip: 'IP',
-  active: 'Active',
-  block: 'Block',
-  'logined date': 'Logined Date',
-  'created time': 'Created Time',
-  'updated time': 'Updated Time',
-
-  addUser: 'Add User',
-  editStatus: 'Edit Status',
-  deleteUser: 'Delete User',
-
-  'login form': 'Login Form',
-  'register form': 'Register Form',
-  'create account text': 'Create an account',
+  chart: 'Chart',
 
   /*validate*/
   validate_required: '{msg} is required',

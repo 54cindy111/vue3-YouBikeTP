@@ -2,7 +2,7 @@
   <Loading />
   <!-- <SideMenu /> -->
   <div class="MainLayout">
-    <!-- <Header /> -->
+    <Header />
     <div class="view">
       <router-view :key="fullPath"></router-view>
     </div>
@@ -12,13 +12,13 @@
 <script lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-// import Header from '@/components/Header.vue'
+import Header from '@/components/Header.vue'
 // import SideMenu from '@/components/SideMenu.vue'
 import Loading from '@/components/Loading.vue'
 
 export default {
   components: {
-    // Header,
+    Header,
     // SideMenu,
     Loading
   },

@@ -1,22 +1,19 @@
 <template>
-  <el-row class="header" type="flex" justify="space-between">
-    <el-row class="header">
-      <el-button
-        class="menu"
-        icon="el-icon-s-fold"
-        @click="changeSideMenu(true)"
-      >
-        {{ $t('menu') }}
-      </el-button>
-    </el-row>
-  </el-row>
+  <div class="lang">
+    <LangSelector />
+  </div>
 </template>
 
 <script lang="ts">
 import { getCurrentInstance } from 'vue'
-import { mapGetters } from 'vuex'
+import { useStore, mapGetters } from 'vuex'
+import { useRouter } from 'vue-router'
+import LangSelector from '@/components/LangSelector.vue'
 
 export default {
+  components: {
+    LangSelector
+  },
   computed: {
     ...mapGetters({
       personal: 'persistedState/personal'
@@ -26,26 +23,28 @@ export default {
     //init
     const internalInstance: any = getCurrentInstance()
     const $bus = internalInstance.appContext.config.globalProperties.$bus
+    const store = useStore()
+    const router = useRouter()
 
     //function
     const changeSideMenu = (val: boolean) => {
       $bus.emit('change-sidemenu', val)
     }
+    const logout = async () => {
+      await store.dispatch('user/logout')
+      await store.dispatch('persistedState/cleanPersistedState')
+      router.push({ name: 'Login' })
+    }
 
     return {
-      changeSideMenu
+      changeSideMenu,
+      logout
     }
   }
 }
 </script>
 <style scoped lang="scss">
-.header {
-  align-items: center;
-}
-.menu {
-  margin-right: 16px;
-}
-.el-select {
-  width: 100px;
+.lang {
+  text-align: right;
 }
 </style>

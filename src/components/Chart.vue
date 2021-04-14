@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <div>{{ title }}圖表</div>
+    <div>{{ title }} {{ $t('chart') }}</div>
     <div>
       <canvas ref="myChartRef"></canvas>
     </div>
