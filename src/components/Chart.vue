@@ -90,6 +90,5 @@ export default {
 <style lang="scss" scoped>
 .title {
   margin-bottom: 10px;
-  font-weight: bold;
 }
 </style>
