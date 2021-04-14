@@ -28,7 +28,7 @@ export default {
         list[item].tot = await parseInt(list[item].tot)
         list[item].sbi = await parseInt(list[item].sbi)
         toBikeArray.push(list[item])
-        toAreaArray.push(list[item].sarea)
+        toAreaArray.push({ ch: list[item].sarea, en: list[item].sareaen })
       }
       commit('setBikeList', toBikeArray)
       commit('setAreaList', toAreaArray)

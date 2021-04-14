@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <div>{{ title }} {{ $t('chart') }}</div>
+    <div>{{ lang === 'ch' ? title.ch : title.en }} {{ $t('chart') }}</div>
     <div>
       <canvas ref="myChartRef"></canvas>
     </div>
@@ -10,14 +10,20 @@
 <script lang="ts">
 import Chart from 'chart.js/auto'
 import * as _chartType from '@/lib/common/chart'
+import i18n from '@/plugins/i18nPlugin'
 import { ref, onMounted, toRefs, watch } from 'vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Chart',
+  computed: {
+    ...mapGetters({
+      lang: 'app/lang'
+    })
+  },
   props: {
     title: {
-      type: String,
-      default: ''
+      type: Object
     },
     type: {
       type: String,
@@ -46,6 +52,9 @@ export default {
       const chartType: any = Object.assign({}, _chartType)
       chartType[type.value].data.labels = labels.value
       chartType[type.value].data.datasets[0].data = datasetsData.value
+      if (type.value === 'bar') {
+        chartType[type.value].data.datasets[0].label = i18n.global.t('site')
+      }
       const config = chartType[type.value].config
       return config
     }

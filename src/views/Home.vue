@@ -15,11 +15,16 @@
     </div>
     <el-row type="flex" align="middle" style="margin-bottom: 10px;">
       <el-col class="text" :span="2">地區</el-col>
-      <el-select v-model="select" placeholder="請選擇" @change="search">
+      <el-select
+        value-key="ch"
+        v-model="select"
+        placeholder="請選擇"
+        @change="search"
+      >
         <el-option
           v-for="item in areaArr"
-          :key="item"
-          :label="item"
+          :key="item.ch"
+          :label="lang === 'ch' ? item.ch : item.en"
           :value="item"
         >
         </el-option>
@@ -55,9 +60,13 @@ export default {
     const store = useStore()
     const originBikeArr: any = computed(() => store.state.ubike.bikeList)
     const originArea: any = computed(() => store.state.ubike.areaList)
+    const lang: any = computed(() => store.state.app.lang)
 
     //ref
-    const chartTitle: any = ref('')
+    const chartTitle: any = ref({
+      ch: '',
+      en: ''
+    })
     const chartData: any = ref({
       type: '',
       labels: [],
@@ -67,7 +76,10 @@ export default {
     const bikeArr: any = ref(Object.assign([], originBikeArr.value))
     const areaArr: any = ref([])
     const input: any = ref('')
-    const select: any = ref('全部')
+    const select: any = ref({
+      ch: '',
+      en: ''
+    })
     const loading = ref(false)
     const mapData: any = ref([])
 
@@ -79,29 +91,35 @@ export default {
     }
 
     const getArea = async () => {
-      areaArr.value = await originArea.value.filter(
-        (item: any, index: any, arr: any) => {
-          return arr.indexOf(item) === index
-        }
+      const set = new Set()
+      areaArr.value = await originArea.value.filter((item: any) =>
+        !set.has(item.ch) ? set.add(item.ch) : false
       )
-      areaArr.value.splice(0, 0, '全部')
+      areaArr.value.splice(0, 0, { ch: '全部', en: 'All' })
     }
     const changeChartData = (data: any) => {
       chartData.value = data
     }
     const getAllAreaData = () => {
       const countList: any = []
+      let labelList: any = []
       areaArr.value.forEach(async (x: any) => {
         const name = originArea.value.filter((y: any) => {
-          return x === y
+          return x.ch === y.ch
         })
         await countList.push(name.length)
       })
-      chartTitle.value = ''
+      chartTitle.value = {
+        ch: '',
+        en: ''
+      }
+      labelList = areaArr.value.map((i: any) => {
+        return i[lang.value]
+      })
       chartData.value = {
         type: 'bar',
         datasetsData: countList,
-        labels: areaArr
+        labels: labelList
       }
     }
     const getAreaData = () => {
@@ -114,36 +132,54 @@ export default {
       chartTitle.value = select.value
       chartData.value = {
         type: 'pie',
-        labels: ['可借車輛', '可停空位'],
+        labels:
+          lang.value === 'ch'
+            ? ['可借車輛', '可停空位']
+            : ['Can be by vehicle', 'Can be stopped'],
         datasetsData: [sbi, tot]
       }
     }
     const getSnoData = (d: any) => {
-      chartTitle.value = d.sna
+      chartTitle.value = {
+        ch: d.sna,
+        en: d.snaen
+      }
       chartData.value = {
         type: 'pie',
-        labels: ['可借車輛', '可停空位'],
+        labels:
+          lang.value === 'ch'
+            ? ['可借車輛', '可停空位']
+            : ['Can be by vehicle', 'Can be stopped'],
         datasetsData: [d.sbi, d.tot]
       }
       mapData.value = [d]
     }
 
+    const isHasText = (item: any) => {
+      if (lang.value === 'ch') {
+        return (
+          item.sna.search(input.value) !== -1 ||
+          item.ar.search(input.value) !== -1
+        )
+      } else {
+        const site = item.snaen.toLowerCase()
+        const area = item.aren.toLowerCase()
+        return (
+          site.search(input.value.toLowerCase()) !== -1 ||
+          area.search(input.value.toLowerCase()) !== -1
+        )
+      }
+    }
+
     const search = () => {
-      if (select.value !== '全部') {
+      if (select.value.ch !== '全部' && select.value.ch !== '') {
         bikeArr.value = originBikeArr.value.filter((item: any) => {
-          return (
-            (item.sna.search(input.value) !== -1 ||
-              item.ar.search(input.value) !== -1) &&
-            item.sarea === select.value
-          )
+          return isHasText(item) && item.sarea === select.value.ch
         })
         getAreaData()
       } else if (input.value) {
         bikeArr.value = originBikeArr.value.filter((item: any) => {
-          return (
-            item.sna.search(input.value) !== -1 ||
-            item.ar.search(input.value) !== -1
-          )
+          return isHasText(item)
         })
         getAreaData()
       } else {
@@ -159,6 +195,7 @@ export default {
     onMounted(async () => {
       await getBikeList()
     })
+
     watch(
       originBikeArr,
       async () => {
@@ -167,12 +204,15 @@ export default {
       },
       { deep: true }
     )
+    watch(lang, search)
+
     onUnmounted(() => {
       clearInterval(getListID)
     })
 
     return {
       loading,
+      lang,
       hideChange,
       getAllAreaData,
       chartTitle,

@@ -1,9 +1,12 @@
 <template>
   <div class="list">
     <el-table :data="arr" style="width: 100%" @row-click="handdleRow">
-      <el-table-column prop="sarea" label="地區"> </el-table-column>
-      <el-table-column prop="sna" label="租賃站點"> </el-table-column>
-      <el-table-column prop="ar" label="地點"> </el-table-column>
+      <el-table-column :prop="lang === 'ch' ? 'sarea' : 'sareaen'" label="地區">
+      </el-table-column>
+      <el-table-column :prop="lang === 'ch' ? 'sna' : 'snaen'" label="租賃站點">
+      </el-table-column>
+      <el-table-column :prop="lang === 'ch' ? 'ar' : 'aren'" label="地點">
+      </el-table-column>
       <el-table-column prop="sbi" label="可借車輛" sortable> </el-table-column>
       <el-table-column prop="tot" label="可停空位" sortable> </el-table-column>
     </el-table>
@@ -11,8 +14,15 @@
 </template>
 
 <script lang="ts">
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Bike List',
+  computed: {
+    ...mapGetters({
+      lang: 'app/lang'
+    })
+  },
   props: ['arr'],
   setup(props: any, { emit }: any) {
     const handdleRow = (row: any) => {
@@ -21,7 +31,8 @@ export default {
         tot: Number(row.tot),
         lat: Number(row.lat),
         lng: Number(row.lng),
-        sna: row.sna
+        sna: row.sna,
+        snaen: row.snaen
       })
     }
     return {

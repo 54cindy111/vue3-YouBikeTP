@@ -13,6 +13,7 @@ export const tw = {
   Home: '首頁',
 
   chart: '圖表',
+  site: '站點',
 
   /*validate*/
   validate_required: '{msg}必填',

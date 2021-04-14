@@ -13,6 +13,7 @@ export const en = {
   Home: 'Home',
 
   chart: 'Chart',
+  site: 'Site',
 
   /*validate*/
   validate_required: '{msg} is required',
