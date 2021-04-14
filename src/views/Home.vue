@@ -11,14 +11,14 @@
   <div class="home">
     <div class="search">
       <i class="el-icon-search"></i>
-      <span>篩選</span>
+      <span>{{ $t('search') }}</span>
     </div>
     <el-row type="flex" align="middle" style="margin-bottom: 10px;">
-      <el-col class="text" :span="2">地區</el-col>
+      <el-col class="text" :span="2">{{ $t('area') }}</el-col>
       <el-select
         value-key="ch"
         v-model="select"
-        placeholder="請選擇"
+        :placeholder="$t('select')"
         @change="search"
       >
         <el-option
@@ -31,11 +31,11 @@
       </el-select>
     </el-row>
     <el-row type="flex" align="middle" style="margin-bottom: 10px;">
-      <el-col class="text" :span="2">關鍵字</el-col>
+      <el-col class="text" :span="2">{{ $t('keyword') }}</el-col>
       <el-col :span="22">
         <el-input
           v-model="input"
-          placeholder="請輸入關鍵字"
+          :placeholder="`${$t('input')} ${$t('keyword')}`"
           @change="search"
         ></el-input>
       </el-col>
@@ -241,7 +241,7 @@ export default {
   text-align: left;
 }
 .el-icon-search {
-  margin-right: 4px;
+  margin-right: 8px;
 }
 .search {
   margin-bottom: 10px;

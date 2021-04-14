@@ -1,14 +1,25 @@
 <template>
   <div class="list">
     <el-table :data="arr" style="width: 100%" @row-click="handdleRow">
-      <el-table-column :prop="lang === 'ch' ? 'sarea' : 'sareaen'" label="地區">
+      <el-table-column
+        :prop="lang === 'ch' ? 'sarea' : 'sareaen'"
+        :label="$t('area')"
+      >
       </el-table-column>
-      <el-table-column :prop="lang === 'ch' ? 'sna' : 'snaen'" label="租賃站點">
+      <el-table-column
+        :prop="lang === 'ch' ? 'sna' : 'snaen'"
+        :label="$t('site')"
+      >
       </el-table-column>
-      <el-table-column :prop="lang === 'ch' ? 'ar' : 'aren'" label="地點">
+      <el-table-column
+        :prop="lang === 'ch' ? 'ar' : 'aren'"
+        :label="$t('addr')"
+      >
       </el-table-column>
-      <el-table-column prop="sbi" label="可借車輛" sortable> </el-table-column>
-      <el-table-column prop="tot" label="可停空位" sortable> </el-table-column>
+      <el-table-column prop="sbi" :label="$t('sbi')" sortable>
+      </el-table-column>
+      <el-table-column prop="tot" :label="$t('tot')" sortable>
+      </el-table-column>
     </el-table>
   </div>
 </template>

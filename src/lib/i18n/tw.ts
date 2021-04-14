@@ -13,7 +13,17 @@ export const tw = {
   Home: '首頁',
 
   chart: '圖表',
-  site: '站點',
+  site: '租賃站點',
+  area: '地區',
+  addr: '地點',
+  sbi: '可借車輛',
+  tot: '可停空位',
+
+  search: '篩選',
+  keyword: '關鍵字',
+
+  select: '請選擇',
+  input: '請輸入',
 
   /*validate*/
   validate_required: '{msg}必填',

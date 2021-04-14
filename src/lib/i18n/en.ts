@@ -14,6 +14,16 @@ export const en = {
 
   chart: 'Chart',
   site: 'Site',
+  area: 'Area',
+  addr: 'Address',
+  sbi: 'Can be by vehicle',
+  tot: 'Can be stopped',
+
+  search: 'Search',
+  keyword: 'Keyword',
+
+  select: 'Please Select',
+  input: 'Please Input',
 
   /*validate*/
   validate_required: '{msg} is required',
