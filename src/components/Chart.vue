@@ -13,7 +13,7 @@
 import Chart from 'chart.js/auto'
 import * as _chartType from '@/lib/common/chart'
 import i18n from '@/plugins/i18nPlugin'
-import { ref, onMounted, toRefs, watch } from 'vue'
+import { ref, onMounted, toRefs, watch, getCurrentInstance } from 'vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -41,6 +41,9 @@ export default {
     }
   },
   setup(props: any, { emit }: any) {
+    const internalInstance: any = getCurrentInstance()
+    const $bus = internalInstance.appContext.config.globalProperties.$bus
+
     let _rChart = false
     const myChartRef = ref(null)
     const { labels, datasetsData, type } = toRefs(props)
@@ -75,7 +78,7 @@ export default {
       await newChart()
     }
 
-    watch(labels, changeChart, { deep: true })
+    // watch(labels, changeChart, { deep: true })
 
     onMounted(() => {
       newChart()
@@ -84,6 +87,9 @@ export default {
           window.location.reload()
         }
       })
+    })
+    $bus.on('change-chartData', (data: any) => {
+      changeChart()
     })
     return {
       myChartRef

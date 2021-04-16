@@ -78,8 +78,4 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
-.test {
-  color: #409eff;
-}
-</style>
+<style scoped lang="scss"></style>

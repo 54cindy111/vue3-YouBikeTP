@@ -8,6 +8,16 @@
     :datasetsData="chartData.datasetsData"
     @hideChange="hideChange"
   />
+  <div v-if="!loading">
+    <el-row type="flex" align="middle" justify="center">
+      <div v-for="t in chartTypeArr" :key="t">
+        <span v-if="chartData.type === t" class="textBtnActive">
+          {{ t }}
+        </span>
+        <span v-else @click="changeType(t)" class="textBtn">{{ t }}</span>
+      </div>
+    </el-row>
+  </div>
   <div class="home">
     <div class="search">
       <i class="el-icon-search"></i>
@@ -51,7 +61,14 @@ import BikeList from '@/components/Table/bikeList.vue'
 import Chart from '@/components/Chart.vue'
 import Map from '@/components/Map.vue'
 import ScrollTo from '@/components/ScrollTo.vue'
-import { onMounted, ref, computed, onUnmounted, watch } from 'vue'
+import {
+  onMounted,
+  ref,
+  computed,
+  onUnmounted,
+  watch,
+  getCurrentInstance
+} from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -59,10 +76,13 @@ export default {
   components: { BikeList, Chart, Map, ScrollTo },
   setup() {
     //init
+    const internalInstance: any = getCurrentInstance()
+    const $bus = internalInstance.appContext.config.globalProperties.$bus
     const store = useStore()
     const originBikeArr: any = computed(() => store.state.ubike.bikeList)
     const originArea: any = computed(() => store.state.ubike.areaList)
     const lang: any = computed(() => store.state.app.lang)
+    const chartTypeArr: any = ref(['line', 'bar', 'pie'])
 
     //ref
     const chartTitle: any = ref({
@@ -101,6 +121,7 @@ export default {
     }
     const changeChartData = (data: any) => {
       chartData.value = data
+      $bus.emit('change-chartData', chartData.value)
     }
     const getAllAreaData = () => {
       const countList: any = []
@@ -118,11 +139,11 @@ export default {
       labelList = areaArr.value.map((i: any) => {
         return i[lang.value]
       })
-      chartData.value = {
+      changeChartData({
         type: 'bar',
         datasetsData: countList,
         labels: labelList
-      }
+      })
     }
     const getAreaData = () => {
       let sbi = 0
@@ -132,28 +153,28 @@ export default {
         tot = tot + Number(x.tot)
       })
       chartTitle.value = select.value
-      chartData.value = {
+      changeChartData({
         type: 'pie',
         labels:
           lang.value === 'ch'
             ? ['可借車輛', '可停空位']
             : ['Can be by vehicle', 'Can be stopped'],
         datasetsData: [sbi, tot]
-      }
+      })
     }
     const getSnoData = (d: any) => {
       chartTitle.value = {
         ch: d.sna,
         en: d.snaen
       }
-      chartData.value = {
+      changeChartData({
         type: 'pie',
         labels:
           lang.value === 'ch'
             ? ['可借車輛', '可停空位']
             : ['Can be by vehicle', 'Can be stopped'],
         datasetsData: [d.sbi, d.tot]
-      }
+      })
       mapData.value = [d]
     }
 
@@ -190,6 +211,10 @@ export default {
       }
     }
 
+    const changeType = async (type: string) => {
+      chartData.value.type = type
+      changeChartData(chartData.value)
+    }
     const hideChange = (val: any) => {
       loading.value = val
     }
@@ -225,7 +250,9 @@ export default {
       input,
       search,
       getSnoData,
-      mapData
+      mapData,
+      chartTypeArr,
+      changeType
     }
   }
 }
@@ -262,5 +289,18 @@ export default {
 .text {
   font-size: 14px;
   color: #606266;
+}
+.textBtn {
+  cursor: pointer;
+  color: #76787a;
+  padding: 10px;
+}
+.textBtnActive {
+  cursor: pointer;
+  padding: 10px;
+  color: #3089e2;
+}
+.textBtn:hover {
+  color: #3089e2;
 }
 </style>
