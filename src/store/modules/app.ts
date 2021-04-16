@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: {
     loading: false,
-    lang: 'en'
+    lang: 'ch'
   },
   getters: {
     loading: (state: any) => state.loading,

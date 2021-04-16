@@ -79,6 +79,11 @@ export default {
 
     onMounted(() => {
       newChart()
+      document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState == 'visible') {
+          window.location.reload()
+        }
+      })
     })
     return {
       myChartRef
