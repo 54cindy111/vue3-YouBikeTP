@@ -272,6 +272,7 @@ export default {
   }
 }
 .map {
+  padding: 10px 0;
   position: relative;
   height: 30vh;
 }
@@ -298,9 +299,9 @@ export default {
 .textBtnActive {
   cursor: pointer;
   padding: 10px;
-  color: #3089e2;
+  color: #eb9549;
 }
 .textBtn:hover {
-  color: #3089e2;
+  color: #eb9549;
 }
 </style>
