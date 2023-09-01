@@ -1,29 +1,11 @@
-# vue-next-project
+### vue3-YouBikeTP
 
-## Project setup
+Taipei YouBike Map | Use vue3+chartJs+leaflet+i18n
+
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
 ```
 yarn serve
 ```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
